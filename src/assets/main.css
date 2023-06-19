@@ -1,35 +1,115 @@
-@import './base.css';
-
-#app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-
-  font-weight: normal;
+@import "./base.css";
+* {
+  box-sizing: border-box;
+  margin: 0;
 }
 
-a,
-.green {
+::-webkit-scrollbar {
+  width: 2px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: black;
+}
+
+::-webkit-scrollbar-track {
+  background-color: var(--primary);
+}
+
+a {
+  /* Resetting text decoration */
   text-decoration: none;
-  color: hsla(160, 100%, 37%, 1);
-  transition: 0.4s;
+  outline: none;
+
+  /* Resetting color */
+  color: inherit;
 }
 
-@media (hover: hover) {
-  a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
-  }
+button {
+  /* Resetting box model properties */
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: none;
+
+  /* Resetting font properties */
+  font: inherit;
+  line-height: normal;
+
+  /* Resetting appearance */
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  cursor: pointer;
 }
 
-@media (min-width: 1024px) {
-  body {
-    display: flex;
-    place-items: center;
-  }
+input[type="text"] {
+  /* Resetting box model properties */
+  margin: 0;
+  padding: 0;
+  border: none;
 
-  #app {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
-  }
+  /* Resetting font properties */
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+
+  /* Resetting appearance */
+  background: none;
+  appearance: none;
+
+  /* Resetting other properties */
+  outline: none;
+  box-shadow: none;
+  resize: none;
+}
+
+input[type="checkbox"] {
+  /* Resetting custom styles */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  outline: none;
+  border: none;
+  background-color: transparent;
+  padding: 0;
+  margin: 0;
+}
+
+input[type="checkbox"]::before {
+  /* Resetting custom checkbox icon */
+  content: "";
+  display: inline-block;
+  width: 13px;
+  height: 13px;
+  border-radius: 100%;
+  border: 1px solid var(--triority);
+  background-color: white;
+  margin-right: 5px;
+  vertical-align: middle;
+}
+
+input[type="checkbox"]:checked::before {
+  /* Resetting custom checked checkbox icon */
+  background-color: var(--triority);
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  content: "\f00c";
+  font-size: 0.5rem;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+body #app {
+  font-family: "Dosis", sans-serif;
+  width: 100vw;
+  height: 100vh;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
