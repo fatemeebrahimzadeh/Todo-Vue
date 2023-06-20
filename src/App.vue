@@ -1,7 +1,7 @@
 <script setup>
 import { onMounted, ref, watchEffect } from 'vue'
 import AppHeader from '@/components/AppHeader.vue'
-import AppContent from '@/components/AppContent.vue'
+import TodoList from '@/components/TodoList.vue'
 import AppEntrance from '@/components/AppEntrance.vue'
 
 const inputData = ref([])
@@ -50,7 +50,7 @@ watchEffect(() => {
 <template>
   <div class="container">
     <app-header @changeMode="changeMode" />
-    <app-content
+    <todo-list
       :inputData="inputData"
       @deleteTask="deleteTask"
       @checkTask="checkTask"
