@@ -1,5 +1,5 @@
 <script setup>
-import ContentTask from '@/components/ContentTask.vue'
+import TodoTask from '@/components/TodoTask.vue'
 import { computed, ref, watchEffect } from 'vue'
 const props = defineProps(['todoList', 'listMode'])
 defineEmits(['deleteTask', 'checkTask', 'todos-updated'])
@@ -34,7 +34,7 @@ const listType = computed(() => {
     >
       <template v-for="({ task, time, isChecked }, index) in localTodos" :key="time.toString()">
         <transition name="fade">
-          <content-task
+          <todo-task
             v-if="listType(isChecked)"
             :task="task"
             :time="time"
