@@ -1,22 +1,28 @@
+<script setup>
+// import { ref } from 'vue'
+
+defineProps(['task', 'time', 'isChecked'])
+defineEmits(['deleteTask', 'checkTask'])
+// let checkbox = ref(false)
+</script>
+
 <template>
-  <div class="task">
+  <div class="task-container" :class="{ 'task--done': isChecked }">
     <span class="task__priority"></span>
-    <div class="task__name">task one</div>
-    <div class="task__time">2018/5/8 15:32</div>
-    <i class="task__delete fa-solid fa-close"></i>
-    <input class="task__checkbox" type="checkbox" />
+    <div class="task__name">{{ task }}</div>
+    <div class="task__time">{{ time }}</div>
+    <i class="task__delete fa-solid fa-close" @click.prevent="$emit('deleteTask')"></i>
+    <input
+      class="task__checkbox"
+      type="checkbox"
+      :checked="isChecked"
+      @click="$emit('checkTask')"
+    />
   </div>
-  <!-- <div class="task task--done">
-      <span class="task__priority"></span>
-      <div class="task__name">task one</div>
-      <div class="task__time">2018/5/8 15:32</div>
-      <i class="task__delete fa-solid fa-close"></i>
-      <input class="task__checkbox" type="checkbox" />
-    </div> -->
 </template>
 
 <style scoped>
-.task {
+.task-container {
   background-color: white;
   border-radius: 20px;
   padding: 0.25rem 0.5rem;
@@ -29,20 +35,17 @@
   grid-template-rows: 1fr 1fr;
 }
 
-.task.task--done {
+.task-container.task--done {
   background-color: #5f9ea06a;
+}
+
+.task-container.task--done .task__name,
+.task-container.task--done .task__time {
   color: white;
-}
-
-.task.task--done .task__name {
   text-decoration: line-through;
 }
 
-.task.task--done .task__time {
-  text-decoration: line-through;
-}
-
-.task .task__priority {
+.task-container .task__priority {
   background-color: var(--secondary);
   border-radius: 10px;
   margin: 0.5rem 0.25rem;
@@ -50,19 +53,27 @@
   grid-row: 1 / 3;
 }
 
-.task .task__name {
+.task-container .task__name {
   margin: 0 0.25rem;
   grid-column-start: 2;
   grid-row: 1 / 2;
+  max-width: 150px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.task .task__time {
+.task-container .task__time {
   margin: 0 0.25rem;
   grid-column-start: 2;
   grid-row: 2 / 3;
+  max-width: 150px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.task .task__delete {
+.task-container .task__delete {
   cursor: pointer;
   display: flex;
   justify-content: center;
@@ -71,7 +82,7 @@
   grid-row: 1 / 3;
 }
 
-.task .task__checkbox {
+.task-container .task__checkbox {
   display: flex;
   justify-content: center;
   align-items: center;

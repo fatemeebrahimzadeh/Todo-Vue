@@ -1,20 +1,25 @@
+<script setup>
+let inputData = ''
+defineEmits(['changeInput'])
+</script>
+
 <template>
-  <div class="entrance">
-    <input type="text" placeholder="Enter you task" />
-    <button>
+  <form class="entrance-form" @submit.prevent="$emit('changeInput', $event)">
+    <input name="input" type="text" placeholder="Enter your task" v-model.trim.lazy="inputData" />
+    <button type="submit">
       <i class="fa-solid fa-circle-plus"></i>
     </button>
-  </div>
+  </form>
 </template>
 
 <style scoped>
-.entrance {
+.entrance-form {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.entrance input {
+.entrance-form input {
   border: 2px solid black;
   border-radius: 30px;
   padding: 0.25rem 0.5rem;
@@ -22,7 +27,7 @@
   background-color: white;
 }
 
-.entrance button {
+.entrance-form button {
   font-size: 1.5rem;
 }
 </style>
