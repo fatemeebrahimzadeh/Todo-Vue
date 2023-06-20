@@ -103,6 +103,11 @@ input[type="checkbox"]:checked::before {
   align-items: center;
 }
 
+ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
 body #app {
   font-family: "Dosis", sans-serif;
   width: 100vw;

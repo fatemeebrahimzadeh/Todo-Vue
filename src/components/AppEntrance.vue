@@ -25,6 +25,7 @@ defineEmits(['changeInput'])
   padding: 0.25rem 0.5rem;
   margin: 0.5rem;
   background-color: white;
+  width: 80%;
 }
 
 .entrance-form button {

@@ -1,16 +1,37 @@
 <script setup>
 import TodoTask from '@/components/TodoTask.vue'
-import { computed, ref, watchEffect } from 'vue'
-const props = defineProps(['todoList', 'listMode'])
-defineEmits(['deleteTask', 'checkTask', 'todos-updated'])
+import { computed, onMounted, ref, watch, watchEffect } from 'vue'
+const props = defineProps(['inputData', 'listMode'])
+import draggable from 'vuedraggable'
+defineEmits(['deleteTask', 'checkTask', 'updateTodos'])
 
-// #region drag
-const localTodos = ref([])
+const todoList = ref([])
+
+watch(
+  () => props.inputData,
+  (newInput) => {
+    todoList.value.push(newInput)
+  }
+)
+
+function deleteTask(index) {
+  todoList.value.splice(index, 1)
+}
+
+function checkTask(index) {
+  todoList.value[index].isChecked = !todoList.value[index].isChecked
+}
+
+onMounted(() => {
+  const storedData = localStorage.getItem('todoList')
+  if (storedData) {
+    todoList.value = JSON.parse(storedData)
+  }
+})
 
 watchEffect(() => {
-  localTodos.value = [...props.todoList]
+  localStorage.setItem('todoList', JSON.stringify(todoList.value))
 })
-// #endregion drag
 
 const listType = computed(() => {
   return (isChecked) => {
@@ -26,30 +47,23 @@ const listType = computed(() => {
 </script>
 
 <template>
-  <div class="content-container">
-      <template v-for="({ task, time, isChecked }, index) in localTodos" :key="time.toString()">
-        <transition name="fade">
-          <todo-task
-            v-if="listType(isChecked)"
-            :task="task"
-            :time="time"
-            :isChecked="isChecked"
-            @deleteTask="$emit('deleteTask', index)"
-            @checkTask="$emit('checkTask', index)"
-          />
-        </transition>
-      </template>
-  </div>
+  <draggable class="content-container" v-model="todoList" tag="ul" itemKey="id">
+    <template #item="{ element: { task, time, isChecked }, index }">
+      <todo-task
+        v-if="listType(isChecked)"
+        :task="task"
+        :time="time"
+        :isChecked="isChecked"
+        @deleteTask="deleteTask(index)"
+        @checkTask="checkTask(index)"
+      />
+    </template>
+  </draggable>
 </template>
 
 <style scoped>
 .content-container {
   overflow-y: auto;
-}
-
-.drag-handle {
-  cursor: move;
-  /* Add additional styling as needed */
 }
 
 .fade-enter-active,
@@ -64,7 +78,7 @@ const listType = computed(() => {
 
 @media (min-width: 640px) {
   .content-container {
-    max-height: 400px;
+    max-height: 500px;
   }
 }
 </style>

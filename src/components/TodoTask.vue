@@ -7,7 +7,7 @@ defineEmits(['deleteTask', 'checkTask'])
 </script>
 
 <template>
-  <div class="task-container" :class="{ 'task--done': isChecked }">
+  <div class="task-container drag-handle" :class="{ 'task--done': isChecked }">
     <span class="task__priority"></span>
     <div class="task__name">{{ task }}</div>
     <div class="task__time">{{ time }}</div>
@@ -33,6 +33,11 @@ defineEmits(['deleteTask', 'checkTask'])
     'task__priority task__time task__delete task__checkbox';
   grid-template-columns: 1fr 5fr 1fr;
   grid-template-rows: 1fr 1fr;
+}
+
+.drag-handle {
+  cursor: move;
+  /* Add additional styling as needed */
 }
 
 .task-container.task--done {
