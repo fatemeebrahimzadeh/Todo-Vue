@@ -49,14 +49,16 @@ const listType = computed(() => {
 <template>
   <draggable class="content-container" v-model="todoList" tag="ul" itemKey="id">
     <template #item="{ element: { task, time, isChecked }, index }">
-      <todo-task
-        v-if="listType(isChecked)"
-        :task="task"
-        :time="time"
-        :isChecked="isChecked"
-        @deleteTask="deleteTask(index)"
-        @checkTask="checkTask(index)"
-      />
+      <transition name="fade">
+        <todo-task
+          v-if="listType(isChecked)"
+          :task="task"
+          :time="time"
+          :isChecked="isChecked"
+          @deleteTask="deleteTask(index)"
+          @checkTask="checkTask(index)"
+        />
+      </transition>
     </template>
   </draggable>
 </template>
