@@ -51,7 +51,7 @@ watchEffect(() => {
   <div class="container">
     <app-header @changeMode="changeMode" />
     <todo-list
-      :inputData="inputData"
+      :todoList="inputData"
       @deleteTask="deleteTask"
       @checkTask="checkTask"
       :listMode="listMode"

@@ -27,11 +27,6 @@ const listType = computed(() => {
 
 <template>
   <div class="content-container">
-    <draggable
-      v-model="localTodos"
-      :options="{ handle: '.drag-handle' }"
-      @input="this.$emit('todos-updated', localTodos)"
-    >
       <template v-for="({ task, time, isChecked }, index) in localTodos" :key="time.toString()">
         <transition name="fade">
           <todo-task
@@ -44,7 +39,6 @@ const listType = computed(() => {
           />
         </transition>
       </template>
-    </draggable>
   </div>
 </template>
 
