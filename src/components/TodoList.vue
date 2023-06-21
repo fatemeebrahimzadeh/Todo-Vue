@@ -1,14 +1,14 @@
 <script setup>
 import TodoTask from '@/components/TodoTask.vue'
 import { computed, onMounted, ref, watch, watchEffect } from 'vue'
-const props = defineProps(['taskList', 'todoListMode'])
+const props = defineProps(['todo', 'todoListMode'])
 import draggable from 'vuedraggable'
 defineEmits(['deleteTask', 'checkTask', 'updateTodos'])
 
 const todoList = ref([])
 
 watch(
-  () => props.taskList,
+  () => props.todo,
   (newInput) => {
     todoList.value.push(newInput)
   }
@@ -44,10 +44,31 @@ const listType = computed(() => {
     }
   }
 })
+
+const isCompletedTodoListEmpty = computed(
+  () =>
+    props.todoListMode === 'completed' && !todoList.value.filter((todo) => todo.isTaskDone).length
+)
+
+const isNotCompletedTodoListEmpty = computed(
+  () =>
+    props.todoListMode === 'not-completed' &&
+    !todoList.value.filter((todo) => !todo.isTaskDone).length
+)
 </script>
 
 <template>
-  <draggable class="content-container" v-model="todoList" tag="ul" itemKey="id">
+  <div v-if="isCompletedTodoListEmpty" class="empty-container">there isn't any todo to show.</div>
+  <div v-else-if="isNotCompletedTodoListEmpty" class="empty-container">
+    congrajulations, You've done all tasks.
+  </div>
+  <draggable
+    v-else-if="todoList.length"
+    class="content-container"
+    v-model="todoList"
+    tag="ul"
+    itemKey="id"
+  >
     <template #item="{ element: { task, taskTime, isTaskDone }, index }">
       <transition name="fade">
         <todo-task
@@ -61,6 +82,7 @@ const listType = computed(() => {
       </transition>
     </template>
   </draggable>
+  <div v-else class="empty-container">Add your first task ...</div>
 </template>
 
 <style scoped>
@@ -76,6 +98,12 @@ const listType = computed(() => {
 .fade-enter,
 .fade-leave-to {
   opacity: 0;
+}
+
+.empty-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 @media (min-width: 640px) {
