@@ -1,14 +1,14 @@
 <script setup>
 import TodoTask from '@/components/TodoTask.vue'
 import { computed, onMounted, ref, watch, watchEffect } from 'vue'
-const props = defineProps(['inputData', 'listMode'])
+const props = defineProps(['todoInput', 'todoListMode'])
 import draggable from 'vuedraggable'
 defineEmits(['deleteTask', 'checkTask', 'updateTodos'])
 
 const todoList = ref([])
 
 watch(
-  () => props.inputData,
+  () => props.todoInput,
   (newInput) => {
     todoList.value.push(newInput)
   }
@@ -19,7 +19,7 @@ function deleteTask(index) {
 }
 
 function checkTask(index) {
-  todoList.value[index].isChecked = !todoList.value[index].isChecked
+  todoList.value[index].isTaskDone = !todoList.value[index].isTaskDone
 }
 
 onMounted(() => {
@@ -34,11 +34,11 @@ watchEffect(() => {
 })
 
 const listType = computed(() => {
-  return (isChecked) => {
-    if (props.listMode === 'completed') {
-      return isChecked
-    } else if (props.listMode === 'not-completed') {
-      return !isChecked
+  return (isTaskDone) => {
+    if (props.todoListMode === 'completed') {
+      return isTaskDone
+    } else if (props.todoListMode === 'not-completed') {
+      return !isTaskDone
     } else {
       return true
     }
@@ -48,13 +48,13 @@ const listType = computed(() => {
 
 <template>
   <draggable class="content-container" v-model="todoList" tag="ul" itemKey="id">
-    <template #item="{ element: { task, time, isChecked }, index }">
+    <template #item="{ element: { task, taskTime, isTaskDone }, index }">
       <transition name="fade">
         <todo-task
-          v-if="listType(isChecked)"
+          v-if="listType(isTaskDone)"
           :task="task"
-          :time="time"
-          :isChecked="isChecked"
+          :taskTime="taskTime"
+          :isTaskDone="isTaskDone"
           @deleteTask="deleteTask(index)"
           @checkTask="checkTask(index)"
         />

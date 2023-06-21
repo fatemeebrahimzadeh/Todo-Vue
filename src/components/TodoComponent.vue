@@ -1,11 +1,11 @@
 <script setup>
 import { ref } from 'vue'
-import AppHeader from '@/components/AppHeader.vue'
+import TodoHeader from '@/components/TodoHeader.vue'
 import TodoList from '@/components/TodoList.vue'
-import AppEntrance from '@/components/AppEntrance.vue'
+import TodoEntrance from '@/components/TodoEntrance.vue'
 
-const inputData = ref({})
-const listMode = ref('')
+const todoInput = ref({})
+const todoListMode = ref('')
 let countId = 0
 
 function submit(event) {
@@ -20,20 +20,20 @@ function submit(event) {
   }
 
   if (!data.input) return
-  inputData.value = { task: data.input, time: new Date(), isChecked: false, id: countId++ }
+  todoInput.value = { task: data.input, taskTime: new Date(), isTaskDone: false, id: countId++ }
   event.target.reset()
 }
 
 function changeMode(mode) {
-  listMode.value = mode
+  todoListMode.value = mode
 }
 </script>
 
 <template>
   <div class="container">
-    <app-header @changeMode="changeMode" />
-    <todo-list :inputData="inputData" :listMode="listMode" />
-    <app-entrance @changeInput="submit" />
+    <todo-header @changeMode="changeMode" />
+    <todo-list :todoInput="todoInput" :todoListMode="todoListMode" />
+    <todo-entrance @changeInput="submit" />
   </div>
 </template>
 

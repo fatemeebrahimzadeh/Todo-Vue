@@ -1,21 +1,21 @@
 <script setup>
 // import { ref } from 'vue'
 
-defineProps(['task', 'time', 'isChecked'])
+defineProps(['task', 'taskTime', 'isTaskDone'])
 defineEmits(['deleteTask', 'checkTask'])
 // let checkbox = ref(false)
 </script>
 
 <template>
-  <div class="task-container drag-handle" :class="{ 'task--done': isChecked }">
+  <div class="task-container drag-handle" :class="{ 'task--done': isTaskDone }">
     <span class="task__priority"></span>
     <div class="task__name">{{ task }}</div>
-    <div class="task__time">{{ time }}</div>
+    <div class="task__time">{{ taskTime }}</div>
     <i class="task__delete fa-solid fa-close" @click.prevent="$emit('deleteTask')"></i>
     <input
       class="task__checkbox"
       type="checkbox"
-      :checked="isChecked"
+      :checked="isTaskDone"
       @click="$emit('checkTask')"
     />
   </div>

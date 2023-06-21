@@ -1,11 +1,11 @@
 <script setup>
-let inputData = ''
+let todoInput = ''
 defineEmits(['changeInput'])
 </script>
 
 <template>
   <form class="entrance-form" @submit.prevent="$emit('changeInput', $event)">
-    <input name="input" type="text" placeholder="Enter your task" v-model.trim.lazy="inputData" />
+    <input name="input" type="text" placeholder="Enter your task" v-model.trim.lazy="todoInput" />
     <button type="submit">
       <i class="fa-solid fa-circle-plus"></i>
     </button>
