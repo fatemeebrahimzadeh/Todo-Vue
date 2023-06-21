@@ -1,12 +1,12 @@
 <script setup>
-let todoInput = ''
-defineEmits(['changeInput'])
+defineProps(["todoInput"])
+defineEmits(['changeInput','submit'])
 </script>
 
 <template>
-  <form class="entrance-form" @submit.prevent="$emit('changeInput', $event)">
-    <input name="input" type="text" placeholder="Enter your task" v-model.trim.lazy="todoInput" />
-    <button type="submit">
+  <form class="entrance-form" @submit.prevent="$emit('submit', $event)">
+    <input name="input" type="text" placeholder="Enter your task" :value="todoInput"  @change="$emit('changeInput', $event)"/>
+    <button :disabled="!todoInput" type="submit">
       <i class="fa-solid fa-circle-plus"></i>
     </button>
   </form>

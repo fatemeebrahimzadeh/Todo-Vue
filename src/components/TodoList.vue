@@ -1,14 +1,14 @@
 <script setup>
 import TodoTask from '@/components/TodoTask.vue'
 import { computed, onMounted, ref, watch, watchEffect } from 'vue'
-const props = defineProps(['todoInput', 'todoListMode'])
+const props = defineProps(['taskList', 'todoListMode'])
 import draggable from 'vuedraggable'
 defineEmits(['deleteTask', 'checkTask', 'updateTodos'])
 
 const todoList = ref([])
 
 watch(
-  () => props.todoInput,
+  () => props.taskList,
   (newInput) => {
     todoList.value.push(newInput)
   }

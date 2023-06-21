@@ -4,7 +4,8 @@ import TodoHeader from '@/components/TodoHeader.vue'
 import TodoList from '@/components/TodoList.vue'
 import TodoEntrance from '@/components/TodoEntrance.vue'
 
-const todoInput = ref({})
+let todoInput = ref('')
+const taskList = ref({})
 const todoListMode = ref('')
 let countId = 0
 
@@ -20,8 +21,12 @@ function submit(event) {
   }
 
   if (!data.input) return
-  todoInput.value = { task: data.input, taskTime: new Date(), isTaskDone: false, id: countId++ }
-  event.target.reset()
+  taskList.value = { task: data.input, taskTime: new Date(), isTaskDone: false, id: countId++ }
+  todoInput.value = ''
+}
+
+function changeInput(event) {
+  todoInput.value = event.target.value
 }
 
 function changeMode(mode) {
@@ -32,8 +37,8 @@ function changeMode(mode) {
 <template>
   <div class="container">
     <todo-header @changeMode="changeMode" />
-    <todo-list :todoInput="todoInput" :todoListMode="todoListMode" />
-    <todo-entrance @changeInput="submit" />
+    <todo-list :taskList="taskList" :todoListMode="todoListMode" />
+    <todo-entrance :todoInput="todoInput" @submit="submit" @changeInput="changeInput" />
   </div>
 </template>
 
