@@ -1,27 +1,24 @@
 <script setup>
-import ContentTask from '@/components/ContentTask.vue'
-import { computed } from 'vue'
-const props = defineProps(['inputData', 'listMode'])
-defineEmits(['deleteTask', 'checkTask'])
+import TodoTask from '@/components/TodoTask.vue'
+const props = defineProps(['todoList', 'listMode'])
+defineEmits(['deleteTask', 'checkTask', 'todos-updated'])
 
-const listType = computed(() => {
-  return (isChecked) => {
-    if (props.listMode === 'completed') {
-      return isChecked
-    } else if (props.listMode === 'not-completed') {
-      return !isChecked
-    } else {
-      return true
-    }
+const listType = (isChecked) => {
+  if (props.listMode === 'completed') {
+    return isChecked
+  } else if (props.listMode === 'not-completed') {
+    return !isChecked
+  } else {
+    return true
   }
-})
+}
 </script>
 
 <template>
   <div class="content-container">
-    <template v-for="({ task, time, isChecked }, index) in inputData" :key="time.toString()">
+    <template v-for="({ task, time, isChecked }, index) in todoList" :key="time.toString()">
       <transition name="fade">
-        <content-task
+        <todo-task
           v-if="listType(isChecked)"
           :task="task"
           :time="time"
@@ -37,6 +34,11 @@ const listType = computed(() => {
 <style scoped>
 .content-container {
   overflow-y: auto;
+}
+
+.drag-handle {
+  cursor: move;
+  /* Add additional styling as needed */
 }
 
 .fade-enter-active,

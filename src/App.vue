@@ -1,57 +1,51 @@
 <script setup>
-import { onMounted, ref, watchEffect } from 'vue'
+import { reactive, ref } from 'vue'
 import AppHeader from '@/components/AppHeader.vue'
-import TodoList from '@/components/TodoList.vue'
+import AppContent from '@/components/AppContent.vue'
 import AppEntrance from '@/components/AppEntrance.vue'
 
-const inputData = ref([])
+const storageAvailable = typeof window !== 'undefined' && typeof window.localStorage !== 'undefined'
+
+let storedTodoList = []
+if (storageAvailable) {
+  const storedData = localStorage.getItem('todoList')
+  storedTodoList = storedData ? JSON.parse(storedData) : []
+}
+
+const todoList = reactive(storedTodoList)
 const listMode = ref('')
 
-function submit(event) {
-  const formData = new FormData(event.target)
-  const data = {}
-  formData.forEach((value, key) => {
-    data[key] = value
-  })
-
-  if (Object.keys(data).length === 0) {
-    console.warn('No form data found')
+function submit(data) {
+  todoList.push({ task: data, time: new Date(), isChecked: false })
+  if (storageAvailable) {
+    localStorage.setItem('todoList', JSON.stringify(todoList))
   }
-
-  if (!data.input) return
-  inputData.value.push({ task: data.input, time: new Date(), isChecked: false })
-  event.target.reset()
 }
 
 function deleteTask(index) {
-  inputData.value.splice(index, 1)
+  todoList.splice(index, 1)
+  if (storageAvailable) {
+    localStorage.setItem('todoList', JSON.stringify(todoList))
+  }
 }
 
 function checkTask(index) {
-  inputData.value[index].isChecked = !inputData.value[index].isChecked
+  todoList[index].isChecked = !todoList[index].isChecked
+  if (storageAvailable) {
+    localStorage.setItem('todoList', JSON.stringify(todoList))
+  }
 }
 
 function changeMode(mode) {
   listMode.value = mode
 }
-
-onMounted(() => {
-  const storedData = localStorage.getItem('todoList')
-  if (storedData) {
-    inputData.value = JSON.parse(storedData)
-  }
-})
-
-watchEffect(() => {
-  localStorage.setItem('todoList', JSON.stringify(inputData.value))
-})
 </script>
 
 <template>
   <div class="container">
     <app-header @changeMode="changeMode" />
-    <todo-list
-      :todoList="inputData"
+    <app-content
+      :todoList="todoList"
       @deleteTask="deleteTask"
       @checkTask="checkTask"
       :listMode="listMode"

@@ -1,12 +1,25 @@
 <script setup>
-let inputData = ''
-defineEmits(['changeInput'])
+import { ref } from 'vue'
+
+let inputData = ref('')
+const emit = defineEmits(['change-input'])
+
+function isInputValid() {
+  return !!inputData.value
+}
+
+function handleSubmit() {
+  if (isInputValid()) {
+    emit('change-input', inputData.value)
+    inputData.value = ''
+  }
+}
 </script>
 
 <template>
-  <form class="entrance-form" @submit.prevent="$emit('changeInput', $event)">
-    <input name="input" type="text" placeholder="Enter your task" v-model.trim.lazy="inputData" />
-    <button type="submit">
+  <form class="entrance-form" @submit.prevent="handleSubmit">
+    <input name="input" type="text" placeholder="Enter your task" v-model.trim="inputData" />
+    <button :disabled="!inputData" type="submit">
       <i class="fa-solid fa-circle-plus"></i>
     </button>
   </form>
